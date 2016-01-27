@@ -180,7 +180,7 @@ $(document).ready(function () {
     }
 
     function addPointsFromData(treeData) {
-        var isStraightEdges = false;
+        var isStraightEdges = true;
         treeData.nodes.forEach(function (node) {
             var nodeSphere = new THREE.Mesh(new THREE.SphereGeometry(1, 10, 10), new THREE.MeshLambertMaterial({color: 0xffffff}));
             nodeSphere.position.x = node.x;
