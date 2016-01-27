@@ -180,6 +180,7 @@ $(document).ready(function () {
     }
 
     function addPointsFromData(treeData) {
+        var isStraightEdges = false;
         treeData.nodes.forEach(function (node) {
             var nodeSphere = new THREE.Mesh(new THREE.SphereGeometry(1, 10, 10), new THREE.MeshLambertMaterial({color: 0xffffff}));
             nodeSphere.position.x = node.x;
@@ -196,8 +197,18 @@ $(document).ready(function () {
             var src = link.source;
             var tgt = link.target;
             var geometry = new THREE.Geometry();
-            geometry.vertices.push(new THREE.Vector3(src.x, src.y, src.z));
-            geometry.vertices.push(new THREE.Vector3(tgt.x, tgt.y, tgt.z));
+            if (isStraightEdges) {
+                geometry.vertices.push(new THREE.Vector3(src.x, src.y, src.z));
+                geometry.vertices.push(new THREE.Vector3(tgt.x, tgt.y, tgt.z));
+            } else {
+                var curve = new THREE.SplineCurve3([
+                    new THREE.Vector3(src.x, src.y, src.z),
+                    new THREE.Vector3((src.x + (tgt.x - src.x) * 0.75), (src.y + tgt.y) / 2, (src.z + tgt.z) / 2),
+                    //new THREE.Vector3(tgt.x, src.y, tgt.z), // use this instead of above and 2 points for curve to see plumbing pipes.
+                    new THREE.Vector3(tgt.x, tgt.y, tgt.z)
+                ]);
+                geometry.vertices = curve.getPoints(20);
+            }
             var material = new THREE.LineBasicMaterial({
                 color: 0xffffff,
                 linewidth: 2
