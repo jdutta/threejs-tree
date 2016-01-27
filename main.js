@@ -188,8 +188,9 @@ $(document).ready(function () {
             scene.add(nodeSphere);
         });
         //camera.up.set(-1, 0, 0);
-        camera.position.set(treeData.nodes[treeData.nodes.length - 1].x/2, treeData.nodes[0].y, 100);
-        controls.target.set(treeData.nodes[treeData.nodes.length - 1].x/2, treeData.nodes[0].y, 0);
+        var lastNode = treeData.nodes[treeData.nodes.length - 1];
+        camera.position.set(lastNode.x/2, lastNode.y/2, 100);
+        controls.target.set(lastNode.x/2, lastNode.y/2, 0);
 
         treeData.links.forEach(function (link) {
             var src = link.source;
